@@ -1,0 +1,18 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: consumer-center
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.153.129:8850
+        namespace: f7370c26-91e8-450d-b61e-66c58b3d3347
+        group: zhanghao
+        file-extension: yaml
+      discovery:
+        server-addr: 192.168.153.129:8850
+        namespace: f7370c26-91e8-450d-b61e-66c58b3d3347
+        group: zhanghao

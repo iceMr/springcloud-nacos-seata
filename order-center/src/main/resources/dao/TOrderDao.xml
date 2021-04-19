@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+  PUBLIC "-//com.ice.mr.mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ice.mr.dao.TOrderDao">
+
+	 <resultMap id="TOrderResultMap" type="com.ice.mr.info.TOrderInfo">
+        <id property="id" column="id" />
+        <result property="orderNo" column="order_no" />    
+        <result property="userId" column="user_id" />    
+        <result property="commodityCode" column="commodity_code" />    
+        <result property="count" column="count" />    
+        <result property="amount" column="amount" />    
+    </resultMap>
+    
+    <!--根据主键查询-->
+	<select id="findById" resultMap="TOrderResultMap">
+		select id,order_no,user_id,commodity_code,count,amount from t_order where id=#{id}
+        <if test="platformId!=null"> AND platform_id = #{platformId}</if>
+	</select>
+    
+    <!--插入-->
+	 <insert id="insert" parameterType="com.ice.mr.info.TOrderInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    	INSERT INTO t_order
+        (order_no,user_id,commodity_code,count,amount) 
+		values(#{orderNo},#{userId},#{commodityCode},#{count},#{amount})
+    </insert>
+
+    
+    <!--根据传入的map参数查询 并分页-->
+    <select id="findByParamForPage" resultMap="TOrderResultMap" >
+		select id,order_no,user_id,commodity_code,count,amount from t_order
+		where 1=1
+           <if test="obj.search.orderNo!=null"> AND order_no = #{obj.search.orderNo}</if>
+           <if test="obj.search.userId!=null"> AND user_id = #{obj.search.userId}</if>
+           <if test="obj.search.commodityCode!=null"> AND commodity_code = #{obj.search.commodityCode}</if>
+           <if test="obj.search.count!=null"> AND count = #{obj.search.count}</if>
+           <if test="obj.search.amount!=null"> AND amount = #{obj.search.amount}</if>
+
+        <if test="platformId!=null"> AND platform_id = #{platformId}</if>
+        <if test="obj.orderField!=null and obj.orderType!=null"> order by ${obj.orderField} ${obj.orderType}</if>
+	</select>
+    
+     <!--根据传入的实体参数查询-->
+    <select id="findByParam" resultMap="TOrderResultMap" >
+		select id,order_no,user_id,commodity_code,count,amount from t_order
+		where 1=1
+           <if test="obj.orderNo!=null"> AND order_no = #{obj.orderNo}</if>
+           <if test="obj.userId!=null"> AND user_id = #{obj.userId}</if>
+           <if test="obj.commodityCode!=null"> AND commodity_code = #{obj.commodityCode}</if>
+           <if test="obj.count!=null"> AND count = #{obj.count}</if>
+           <if test="obj.amount!=null"> AND amount = #{obj.amount}</if>
+
+        <if test="platformId!=null"> AND platform_id = #{platformId}</if>
+	</select>
+    
+    <!--根据主键进行删除-->
+	<delete id="deleteById"  >
+    	delete from t_order where id=#{id}
+        <if test="platformId!=null"> AND platform_id = #{platformId}</if>
+    </delete>
+    
+    <!--根据实体进行更新-->
+	<update id="update" >
+    	update t_order 
+        <trim prefix="SET" suffixOverrides=",">
+           <if test="obj.orderNo!=null">order_no=#{obj.orderNo},</if>
+           <if test="obj.userId!=null">user_id=#{obj.userId},</if>
+           <if test="obj.commodityCode!=null">commodity_code=#{obj.commodityCode},</if>
+           <if test="obj.count!=null">count=#{obj.count},</if>
+           <if test="obj.amount!=null">amount=#{obj.amount},</if>
+  
+        </trim>
+		where id=#{obj.id} 
+        <if test="platformId!=null"> AND platform_id = #{platformId}</if>
+    </update> 
+	<!--CustomBegin***-->
+    <delete id="deleteByOrderNo"  >
+        delete from t_order where order_no=#{orderNo}
+    </delete>
+    <!--CustomEnd*****-->
+</mapper>
