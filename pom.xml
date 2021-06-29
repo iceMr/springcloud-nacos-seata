@@ -18,6 +18,7 @@
 
     <modules>
         <module>common</module>
+        <module>knowledge</module>
         <module>model</module>
         <module>user-center</module>
         <module>order-center</module>
